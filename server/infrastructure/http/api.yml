@@ -1,0 +1,33 @@
+openapi: 3.0.1
+info:
+  title: duyn-api
+  description: My Assistant
+  version: 1.0.0
+servers:
+- url: /api/v1
+tags:
+- name: Examples
+  description: Simple example endpoints
+- name: Specification
+  description: The swagger API specification
+paths:
+  /healcheck:
+    get:
+      tags:
+      - Examples
+      description: Check server is live
+      responses:
+        200:
+          description: Server is live
+          content: {}
+components:
+  schemas:
+    ExampleBody:
+      title: example
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: no_stress

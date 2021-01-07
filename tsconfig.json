@@ -1,0 +1,24 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true,
+    "paths": {
+      "@infrastructure/*": ["server/infrastructure/*"],
+      "@services/*": ["server/services/*"],
+      "@domain/*": ["server/domain/*"],
+      "@adapters/*": ["server/adapters/*"],
+      "@ioc/*": ["server/infrastructure/IoC/*"]
+    }
+  },
+  "include": ["typings.d.ts", "server/**/*.ts"],
+  "exclude": ["node_modules"]
+}
