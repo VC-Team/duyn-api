@@ -4,7 +4,7 @@
   "description": "My Assistant",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "npm run compile && node dist/index.js",
     "compile": "ts-node build.ts && npm run build",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./server -o ./dist",
     "dev": "nodemon -r tsconfig-paths/register -r ts-node ./server/index.ts | pino-pretty",
@@ -15,7 +15,6 @@
     "test:debug": "mocha -r ts-node/register --inspect-brk test/**/*.ts --exit"
   },
   "dependencies": {
-    "@google-cloud/speech": "^4.1.5",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -25,7 +24,6 @@
     "glob": "^7.1.6",
     "inversify": "^5.0.5",
     "jsonwebtoken": "^8.5.1",
-    "module-alias": "^2.2.2",
     "mongoose": "^5.11.9",
     "pino": "^6.8.0",
     "reflect-metadata": "^0.1.13",
