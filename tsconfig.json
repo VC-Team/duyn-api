@@ -9,8 +9,8 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "outDir": "dist",
-    "typeRoots": ["node_modules/@types"],
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "paths": {
       "@infrastructure/*": ["server/infrastructure/*"],
       "@services/*": ["server/services/*"],
@@ -19,6 +19,10 @@
       "@ioc/*": ["server/infrastructure/IoC/*"]
     }
   },
-  "include": ["typings.d.ts", "server/**/*.ts"],
+  "typeRoots": [
+    "*.d.ts",
+    "types/*.d.ts"
+  ],
+  "include": ["server/**/*"],
   "exclude": ["node_modules"]
 }

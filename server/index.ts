@@ -1,14 +1,13 @@
-import 'module-alias/register';
-
 import '@infrastructure/config/env';
 import './booters';
 
 import Server from '@infrastructure/http/server';
 import routes from '@adapters/routes';
-import mongoConnect from '@infrastructure/mongodb';
+import mongoORM from '@infrastructure/mongodb';
 
 import errorHandler from '@adapters/middlewares/error.handler';
 import WebSocketServer from '@infrastructure/websocket/server';
+import container from '@infrastructure/config/IoC';
 
 const start = async () => {
   const port = parseInt(process.env.PORT);
@@ -17,7 +16,8 @@ const start = async () => {
     return new WebSocketServer(httpServer);
   }) as unknown) as WebSocketServer;
 
-  await mongoConnect();
+  const mongoORM: mongoORM = container.get('mongoORM');
+  await mongoORM.connect();
 
   server.router(routes);
   server.setDefaultErrorHandler(errorHandler);

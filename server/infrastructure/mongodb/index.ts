@@ -1,11 +1,22 @@
+import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
+import { Logger } from 'pino';
+@injectable()
+export default class MongoORM {
+  connection: mongoose.Connection;
+  constructor(@inject('logger') private logger: Logger) {}
 
-export default async function connect(): Promise<void> {
-  const URI = process.env.MONGO_URI;
-  await mongoose.connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  async connect(): Promise<void> {
+    const URI = process.env.MONGO_URI;
+
+    await mongoose
+      .connect(URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => {
+        this.logger.info('Mongo Connected');
+        this.connection = mongoose.connection;
+      });
+  }
 }
-
-export const mongoORM = mongoose;

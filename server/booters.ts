@@ -4,18 +4,26 @@ import container from '@infrastructure/config/IoC';
 import importPattern from '@infrastructure/filesytem/importPattern';
 import { containerBindByType, setDefaultContainer } from '@infrastructure/IoC';
 import { ContainerModule } from 'inversify';
-import { mongoORM } from '@infrastructure/mongodb';
+import MongoORM from '@infrastructure/mongodb';
+import logger from '@infrastructure/logger';
 
 setDefaultContainer(container);
 
+const thirdPartyDependencies = new ContainerModule((bind) => {
+  bind<typeof logger>('logger').toConstantValue(logger);
+  bind<MongoORM>('mongoORM').toConstantValue(new MongoORM(logger));
+});
+
+container.load(thirdPartyDependencies);
+
 importPattern(
-  '/**/*.entity.ts',
-  path.join(process.cwd(), 'server', 'domain', 'entities')
+  '/**/*.entity.{js,ts}',
+  path.join(__dirname, 'domain', 'entities')
 );
 
 importPattern(
-  '/**/*.usecase.ts',
-  path.join(process.cwd(), 'server', 'domain', 'usecases'),
+  '/**/*.usecase.{js,ts}',
+  path.join(__dirname, 'domain', 'usecases'),
   (modules) => {
     modules.map((module) => {
       const m = module?.default || module;
@@ -25,13 +33,13 @@ importPattern(
 );
 
 importPattern(
-  '/**/*.middleware.ts',
-  path.join(process.cwd(), 'server', 'adapters', 'middleware')
+  '/**/*.middleware.{js,ts}',
+  path.join(__dirname, 'adapters', 'middleware')
 );
 
 importPattern(
-  '/**/*.controller.ts',
-  path.join(process.cwd(), 'server', 'adapters', 'controllers'),
+  '/**/*.controller.{js,ts}',
+  path.join(__dirname, 'adapters', 'controllers'),
   (modules) => {
     modules.map((module) => {
       const m = module?.default || module;
@@ -41,8 +49,8 @@ importPattern(
 );
 
 importPattern(
-  '/**/*.repository.ts',
-  path.join(process.cwd(), 'server', 'repository'),
+  '/**/*.repository.{js,ts}',
+  path.join(__dirname, 'repository'),
   (modules) => {
     modules.map((module) => {
       const m = module?.default || module;
@@ -50,9 +58,3 @@ importPattern(
     });
   }
 );
-
-const thirdPartyDependencies = new ContainerModule((bind) => {
-  bind<typeof mongoORM>('mongoORM').toConstantValue(mongoORM);
-});
-
-container.load(thirdPartyDependencies);
